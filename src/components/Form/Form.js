@@ -13,15 +13,15 @@ class Form extends React.Component {
   };
 
   firstNameChange = event => {
-    this.setState({firstname: event.target.value, firstNameError: ''});
+    this.setState({firstname: event.target.value, firstNameError: '', lastNameError: '', passwordError: ''});
   }
 
   lastNameChange = event => {
-    this.setState({lastname: event.target.value, lastNameError: ''});
+    this.setState({lastname: event.target.value, firstNameError: '', lastNameError: '', passwordError: ''});
   }
 
   passwordChange = event => {
-    this.setState({password: event.target.value, passwordError: ''});
+    this.setState({password: event.target.value, firstNameError: '', lastNameError: '', passwordError: ''});
   }  
 
   formSubmit = event => {
