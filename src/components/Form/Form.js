@@ -1,4 +1,5 @@
 import React from 'react';
+import pic from './assets/bond_approve.jpg';
 import './Form.css'
 
 class Form extends React.Component {
@@ -75,8 +76,7 @@ class Form extends React.Component {
     const { lastname, firstname, password } = this.state;
 
     if (firstname === 'james' && lastname === 'bond' && password === '007') {
-      this.setState({ isLoggedIn: true });
-      alert('верно!');
+      this.setState({ loggedIn: true });
     } else {
       this.checkData();
     }
@@ -87,41 +87,45 @@ class Form extends React.Component {
       firstname,
       lastname,
       password,
-      // firstNameError,
-      // lastNameError,
-      // passwordError,
-      // isLoggedIn
+      loggedIn
     } = this.state;
 
     return (
       <div className="app-container">
-        <form className="form" onSubmit={this.formSubmit} >
-          <h1>Введите свои данные</h1>
-          <p className="field">
-            <label className="field__label" htmlFor="firstname">
-              <span className="field-label">Имя</span>
-            </label>
-            <input className="field__input field-input t-input-firstname" type="text" name="firstname" value={firstname} onChange={this.firstNameChange}/>
-            <span className="field__error field-error t-error-firstname">{this.state.firstNameError}</span>
-          </p>
-          <p className="field">
-            <label className="field__label" htmlFor="lastname">
-              <span className="field-label">Фамилия</span>
-            </label>
-            <input className="field__input field-input t-input-lastname" type="text" name="lastname" value={lastname} onChange={this.lastNameChange}/>
-            <span className="field__error field-error t-error-lastname">{this.state.lastNameError}</span>
-          </p>
-          <p className="field">
-            <label className="field__label" htmlFor="password">
-              <span className="field-label">Пароль</span>
-            </label>
-            <input className="field__input field-input t-input-password" type="password" name="password" value={password} onChange={this.passwordChange} />
-            <span className="field__error field-error t-error-password">{this.state.passwordError}</span>
-          </p>
-          <div className="form__buttons">
-            <input type="submit" className="button t-submit" value="Проверить" />
-          </div>
-        </form>
+        
+        {loggedIn ? (
+          <img src={pic} alt="bond approve" className="t-bond-image" />
+        ) : (
+          <form className="form" onSubmit={this.formSubmit} >
+            <h1>Введите свои данные, агент</h1>
+            <p className="field">
+              <label className="field__label" htmlFor="firstname">
+                <span className="field-label">Имя</span>
+              </label>
+              <input className="field__input field-input t-input-firstname" type="text" name="firstname" value={firstname} onChange={this.firstNameChange}/>
+              <span className="field__error field-error t-error-firstname">{this.state.firstNameError}</span>
+            </p>
+            <p className="field">
+              <label className="field__label" htmlFor="lastname">
+                <span className="field-label">Фамилия</span>
+              </label>
+              <input className="field__input field-input t-input-lastname" type="text" name="lastname" value={lastname} onChange={this.lastNameChange}/>
+              <span className="field__error field-error t-error-lastname">{this.state.lastNameError}</span>
+            </p>
+            <p className="field">
+              <label className="field__label" htmlFor="password">
+                <span className="field-label">Пароль</span>
+              </label>
+              <input className="field__input field-input t-input-password" type="password" name="password" value={password} onChange={this.passwordChange} />
+              <span className="field__error field-error t-error-password">{this.state.passwordError}</span>
+            </p>
+            <div className="form__buttons">
+              <input type="submit" className="button t-submit" value="Проверить" />
+            </div>
+          </form>
+
+        )}
+
       </div>
     )
   }
