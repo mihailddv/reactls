@@ -28,12 +28,14 @@ class Layout extends PureComponent {
   };
 
   render() {
-        const {header, footer} = this.props;
+        const {header, footer} = this.props,
+              ifHeader = header ? 'main--with-header' : '',
+              ifFooter = footer ? 'main--with-footer' : '';
 
     return (
       <div>
         {this.renderHeader(header)}
-        <main className="main main--with-header main--with-footer">
+        <main className={`main ${ifHeader} ${ifFooter}`}>
           <SectionTitle className="main__title">Main</SectionTitle>
           <AuthConsumer>
             {({isAuthorized, authorize, authorizeError}) =>
