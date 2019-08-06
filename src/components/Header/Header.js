@@ -6,7 +6,6 @@ import './Header.css';
 class Header extends PureComponent {
   render() {
     return (
-      // <div></div>
       <AuthConsumer>
         {({ isAuthorized, email, logout }) =>
           isAuthorized && (

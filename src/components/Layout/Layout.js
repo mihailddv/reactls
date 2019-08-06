@@ -28,12 +28,12 @@ class Layout extends PureComponent {
   };
 
   render() {
-        const {header, footer} = this.props,
-              ifHeader = header ? 'main--with-header' : '',
-              ifFooter = footer ? 'main--with-footer' : '';
+    const {header, footer} = this.props,
+          ifHeader = header ? 'main--with-header' : '',
+          ifFooter = footer ? 'main--with-footer' : '';
 
     return (
-      <div>
+      <React.Fragment>
         {this.renderHeader(header)}
         <main className={`main ${ifHeader} ${ifFooter}`}>
           <SectionTitle className="main__title">Main</SectionTitle>
@@ -51,7 +51,7 @@ class Layout extends PureComponent {
           </AuthConsumer>
         </main>
         {this.renderFooter(footer)}
-      </div>
+      </React.Fragment>
     );
   }
 }
