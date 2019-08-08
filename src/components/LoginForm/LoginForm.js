@@ -75,7 +75,7 @@ class LoginForm extends Component {
                   onClick={this.handleSubmit}
                 >
                   Войти
-            </button>
+                </button>
               </div>
             </div>
           </div>

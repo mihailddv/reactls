@@ -39,9 +39,9 @@ class AppRouter extends Component {
               </li>
             </ul>
           </nav>
-          <div className={styles.content}>            
+          <div className={styles.content}>
             <h3 className={styles.title}>Home</h3>
-            <Switch>/
+            <Switch>
               <Route path="/app" exact component={Home} />
               <Route path="/app/inbox" exact component={InboxList} />
               <Route path="/app/outbox" exact component={OutboxList} />
