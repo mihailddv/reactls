@@ -1,22 +1,30 @@
 // Изучите файл `/cypress/integration/homework.spec.js`, чтобы понять,
 // какие классы должен использовать компонент.
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './MailList.module';
+import styles from './MailList.module.css';
 
-const MailList = ({ mailData, match }) => {
-  return mailData.map(mail => {
+class MailList extends Component {
+  renderOneMail(mail) {
+    const { match } = this.props;
+    const tilte = mail.body.slice(0, 50);
+
     return (
       <Link
-        to={`${match.url}/${mail.id}`}
         key={mail.id}
         className={styles.link}
+        to={`${match.url}/${mail.id}`}
       >
-        {`${mail.body.slice(0, 52)}...`}
+        {`${tilte}...`}
       </Link>
     );
-  });
-};
+  }
+
+  render() {
+    const { mailData } = this.props;
+    return mailData.map(mail => this.renderOneMail(mail));
+  }
+}
 
 export default MailList;

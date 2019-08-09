@@ -12,16 +12,25 @@
 
 import React, { Component } from 'react';
 import { Route, NavLink, Switch } from 'react-router-dom';
-import styles from './AppRouter.module.css';
 import Home from '../Home';
 import InboxList from '../InboxList';
-import OutboxList from '../OutboxList';
 import InboxMail from '../InboxMail';
+import OutboxList from '../OutboxList';
 import OutboxMail from '../OutboxMail';
+import styles from './AppRouter.module.css';
 import classNames from 'classnames';
 
 class AppRouter extends Component {
+  state = {
+    pageTitle: 'Home'
+  };
+
+  setActivePage = event => {
+    this.setState({ pageTitle: event.target.innerHTML });
+  };
+
   render() {
+    const { pageTitle } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -29,18 +38,42 @@ class AppRouter extends Component {
           <nav className={styles.nav}>
             <ul className={classNames(styles.navList, 't-nav-list')}>
               <li className={styles.navElement}>
-                <a className={classNames(styles.link, 't-link-home')} aria-current="page" href="/app">Home</a>
+                <NavLink
+                  to="/app"
+                  exact
+                  activeClassName="active"
+                  className={classNames(styles.link, 't-link-home')}
+                  onClick={this.setActivePage}
+                >
+                  Home
+                </NavLink>
               </li>
               <li className={styles.navElement}>
-                <a className={classNames(styles.link, 't-link-inbox')} href="/app/inbox">Inbox</a>
+                <NavLink
+                  to="/app/inbox"
+                  exact
+                  activeClassName="active"
+                  className={classNames(styles.link, 't-link-inbox')}
+                  onClick={this.setActivePage}
+                >
+                  Inbox
+                </NavLink>
               </li>
               <li className={styles.navElement}>
-                <a className={classNames(styles.link, 't-link-outbox')} href="/app/outbox">Outbox</a>
+                <NavLink
+                  to="/app/outbox"
+                  exact
+                  activeClassName="active"
+                  className={classNames(styles.link, 't-link-outbox')}
+                  onClick={this.setActivePage}
+                >
+                  Outbox
+                </NavLink>
               </li>
             </ul>
           </nav>
           <div className={styles.content}>
-            <h3 className={styles.title}>Home</h3>
+            <h3 className={styles.title}>{pageTitle}</h3>
             <Switch>
               <Route path="/app" exact component={Home} />
               <Route path="/app/inbox" exact component={InboxList} />
@@ -51,8 +84,7 @@ class AppRouter extends Component {
           </div>
         </div>
       </div>
-    )
-
+    );
   }
 }
 
