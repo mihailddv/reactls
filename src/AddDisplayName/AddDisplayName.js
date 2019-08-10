@@ -4,16 +4,22 @@ import React, { Component } from 'react';
   Напишите простой HOC и укажите для него displayName
 */
 
-export const withDisplayName = (displayName) => {
+export const withDisplayName = (SomeComponent) => {
 
-  class addLoggedInUser extends displayName {
+  class withDisplayName extends Component {
     render() {
-      
+      return (
+        <SomeComponent />
+      )
     }
   }
-  
-  return addLoggedInUser
+
+  withDisplayName.displayName = `HOC${getDisplayName(SomeComponent)}`;
+
+  return withDisplayName;
+
 }
 
-
-// export const withDisplayName = () => {}
+const getDisplayName = (SomeComponent) => {
+  return SomeComponent.displayName || 'Component';
+}
