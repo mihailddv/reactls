@@ -12,21 +12,22 @@ const currentPosition = ({ position }) => {
 };
 
 const nextPosition = ( { position, ingredients, recipe } ) => {
+  let ingredientsLength = ingredients.length,
+      recipeLength = recipe.length;
 
+  
   if ( position === 'clients' ) {
     return 'conveyor_1';
   } else if ( position !== 'conveyor_4' ) {
     return `conveyor_${currentPosition({ position }) + 1}`;
-  } else if ( position === 'conveyor_4' && ingredients.length === recipe.length ) {
+  } else if ( position === 'conveyor_4' && ingredientsLength === recipeLength) {
     return 'finish';
   } else {
     return position;
   }
-
 };
 
 const backPosition = ({ position }) => {
-
   let currentPositionCount = currentPosition({ position });
 
   if ( currentPositionCount > 1) {
@@ -34,16 +35,7 @@ const backPosition = ({ position }) => {
   } else {
     return position;
   }
-
 }
-
-// const backPosition = ({ position }) => {
-//   if (currentPosition({ position }) > 1) {
-//     return `conveyor_${currentPosition({ position }) - 1}`;
-//   } else {
-//     return position;
-//   }
-// };
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -83,6 +75,20 @@ export default (state = [], action) => {
         }
       });
 
+    case ADD_INGREDIENT:
+      return state.map(item => {
+        if ( item.position === action.payload.from && item.recipe.includes(action.payload.ingredient) && !item.ingredients.includes(action.payload.ingredient) ) {
+          return {
+            ...item,
+            ingredients: [
+              ...item.ingredients,
+              action.payload.ingredient
+            ]
+          };
+        } else {
+          return item;
+        }
+      });
 
     default:
       return state;
