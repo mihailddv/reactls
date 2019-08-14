@@ -25,6 +25,26 @@ const nextPosition = ( { position, ingredients, recipe } ) => {
 
 };
 
+const backPosition = ({ position }) => {
+
+  let currentPositionCount = currentPosition({ position });
+
+  if ( currentPositionCount > 1) {
+    return `conveyor_${currentPositionCount - 1}`;
+  } else {
+    return position;
+  }
+
+}
+
+// const backPosition = ({ position }) => {
+//   if (currentPosition({ position }) > 1) {
+//     return `conveyor_${currentPosition({ position }) - 1}`;
+//   } else {
+//     return position;
+//   }
+// };
+
 export default (state = [], action) => {
   switch (action.type) {
 
@@ -45,6 +65,18 @@ export default (state = [], action) => {
           return {
             ...item,
             position: nextPosition(item)
+          }
+        } else {
+          return item
+        }
+      });
+
+    case MOVE_ORDER_BACK:
+      return state.map( item => {
+        if ( item.id === action.payload ) {
+          return {
+            ...item,
+            position: backPosition(item)
           }
         } else {
           return item
