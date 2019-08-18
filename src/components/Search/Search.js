@@ -3,6 +3,7 @@
 // Используйте метод connect и mapStateToProps, mapDispatchToProps,
 // чтобы получить ссылку на поле search вашего стейта
 // и экшн searchRequest.
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './Search.module.css';
@@ -11,7 +12,9 @@ import ShowPreview from '../ShowPreview';
 import { getShows, getIsLoading, getError } from '../../reducers/search';
 
 class Search extends Component {
-  state = { value: '' };
+  state = { 
+    value: ''
+  };
 
   onChange = e => {
     this.setState({
