@@ -4,8 +4,16 @@ import { fetchRequest, fetchSuccess, fetchFailure } from './actions';
 
 // Обратите внимание на тесты reducer.test.js
 // Они помогут вам написать редьюсер
+const data = handleActions(
+  {
+    [handleActions]: () => [],
+    [fetchSuccess]: (_state, action) => action.payload
+  },
+  []
+);
 
-const isLoading = handleActions({
+const isLoading = handleActions(
+  {
     [fetchRequest]: () => true,
     [fetchSuccess]: () => false,
     [fetchFailure]: () => false
@@ -13,20 +21,20 @@ const isLoading = handleActions({
   false
 );
 
-const data = handleActions({
-    [handleActions]: () => [],
-    [fetchSuccess]: (_state, action) => action.payload
-  },
-  null
-);
-
-const error = handleActions({
+const error = handleActions(
+  {
     [fetchRequest]: () => null,
     [fetchFailure]: (_state, action) => action.payload
   },
   null
-)
+);
 
 export default combineReducers({
-  data, isLoading, error
-})
+  data,
+  isLoading,
+  error
+});
+
+export const getFollowersData = state => state.followers.data;
+export const getIsLoading = state => state.followers.isLoading;
+export const getError = state => state.followers.error;
