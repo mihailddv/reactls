@@ -22,7 +22,7 @@ class Search extends PureComponent {
     const { fetchUserRequest, fetchFollowersRequest } = this.props;
     const { user } = this.state;
 
-    if (event.key === 'Enter' && user.length > 0) {
+    if (event.key === 'Enter' && user.length !== 0) {
       fetchUserRequest(user);
       fetchFollowersRequest(user);
     }
