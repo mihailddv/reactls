@@ -20,7 +20,16 @@ const isLoading = handleActions(
   false
 );
 
-export default combineReducers ({ data, isLoading });
+const error = handleActions(
+  {
+    [fetchRequest]: () => null,
+    [fetchFailure]: (state, action) => action.payload
+  },
+  null
+);
+
+export default combineReducers ({ data, isLoading, error });
 
 export const getData = state => state.user.data;
 export const getIsLoading = state => state.user.isLoading;
+export const getError = state => state.user.error;

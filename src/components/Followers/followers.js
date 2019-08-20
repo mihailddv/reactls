@@ -23,16 +23,16 @@ class Followers extends PureComponent {
 
     return (
       <div className={cx(styles.root, 't-followers')}>
+        {/* 
+        Отобразите список пользователей.
+        Для каждого пользователя покажите имя и аватарку.
+        */}
         {followers.map(({ avatar_url, login }) => (
           <div className={styles.follower}>
             <img className={styles.followerImg} src={avatar_url} alt={login} />
             <p className={styles.followerLogin}>{login} </p>
           </div>
         ))}
-        {/* 
-        Отобразите список пользователей.
-        Для каждого пользователя покажите имя и аватарку.
-      */}
       </div>
     );
   }
