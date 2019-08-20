@@ -16,10 +16,16 @@ class Followers extends PureComponent {
     // Если данные не были загружены - сообщите об этом пользователю
     const { followers, isLoading, error } = this.props;
 
-    if (isLoading) return <p>Загрузка данных о подписчиках ...</p>;
-    if (error) return <p>Произошла сетевая ошибка ...</p>;
-    if (!followers.length)
+    if (isLoading) {
+      return <p>Загрузка данных</p>;
+    } else if (error) {
+      return <p>Cетевая ошибка</p>;
+    }
+
+    if (!followers.length) {
       return <p className="t-no-followers">Нет информации о подписчиках</p>;
+    }
+      
 
     return (
       <div className={cx(styles.root, 't-followers')}>
@@ -29,8 +35,11 @@ class Followers extends PureComponent {
         */}
         {followers.map(({ avatar_url, login }) => (
           <div className={styles.follower}>
-            <img className={styles.followerImg} src={avatar_url} alt={login} />
-            <p className={styles.followerLogin}>{login} </p>
+            <img 
+              className={styles.followerImg} 
+              src={avatar_url} 
+              alt={login} />
+            <p className={styles.followerLogin}>{login}</p>
           </div>
         ))}
       </div>

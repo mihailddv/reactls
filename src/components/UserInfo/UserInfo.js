@@ -1,23 +1,28 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import styles from './UserInfo.module.css';
 import { getData, getIsLoading } from '../../modules/User/';
 
 import { connect } from 'react-redux';
 
 class UserInfo extends PureComponent {
+
   renderUserInfo = data => {
     const { avatar_url, name, bio } = data;
 
     return (
-      <Fragment>
+      <React.Fragment>
         <div className={styles.imageWrapper}>
-          <img className={styles.image} src={avatar_url} alt="user info" />
+          <img 
+            className={styles.image} 
+            src={avatar_url} 
+            alt="user info" 
+          />
         </div>
         <div>
           <p className="t-user-name">{name ? name : ''}</p>
           <p className="t-user-bio">{bio ? bio : ''}</p>
         </div>
-      </Fragment>
+      </React.Fragment>
     );
   };
 
@@ -26,10 +31,12 @@ class UserInfo extends PureComponent {
     // Если данные не были загружены - сообщите об этом пользователю
     const { data, isLoading } = this.props;
 
-    if (isLoading) return <p>Загрузка информации о пользователе</p>;
+    if (isLoading) {
+      return <p>Загрузка информации о пользователе</p>;
+    }
 
     return (
-      <Fragment>
+      <React.Fragment>
         {/* Отобразите данные о пользователе */}
         {!data ? (
           <p className="t-no-user-info">Нет информации о пользователе</p>
@@ -42,7 +49,7 @@ class UserInfo extends PureComponent {
             )}
           </div>
         )}
-      </Fragment>
+      </React.Fragment>
     );
   }
 }
