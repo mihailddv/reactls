@@ -19,7 +19,12 @@ class RoversViewer extends PureComponent {
 
   componentDidMount() {
     const { sol, fetchPhotosRequest } = this.props;
-    rovers.forEach(name => fetchPhotosRequest({ name, sol: sol.current }));
+    rovers.forEach(name => fetchPhotosRequest(
+      { 
+        name,
+        sol: sol.current 
+      }
+    ));
   }
 
   changeSol = value => {
