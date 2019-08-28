@@ -38,15 +38,15 @@ export const List = () => {
 
   return (
     <>
-      <ul>
+      <ul className="t-list" >
         {state.map(item => (
-          <li key={item} onClick={onRemove(item)}>
+          <li className="t-list__item" key={item} onClick={onRemove(item)}>
             {item}
           </li>
         ))}
       </ul>
-      <input value={text} onChange={updateText} />
-      <button onClick={onAdd}>Add item</button>
+      <input className="t-input" value={text} onChange={updateText} />
+      <button className="t-btn-add" onClick={onAdd}>Add item</button>
     </>
   );
 };

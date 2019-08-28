@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Component render correctly renders correctly 1`] = `
+Array [
+  <ul
+    className="t-list"
+  />,
+  <input
+    className="t-input"
+    onChange={[Function]}
+    value=""
+  />,
+  <button
+    className="t-btn-add"
+    onClick={[Function]}
+  >
+    Add item
+  </button>,
+]
+`;
