@@ -18,16 +18,16 @@ describe('List', () => {
 
     it('renders correctly', () => {
       const tree = renderer.create(<List />).toJSON();
+
       expect(tree).toMatchSnapshot();
     });
 
   });
 
 
-
   describe('Item work correctlly', () => {
     const container = shallow(<List />);
-    const item = 'Hello test';
+    const item = 'Text';
 
     it('add item', () => {      
       const input = container.find('.t-input');
@@ -41,8 +41,8 @@ describe('List', () => {
       container.find('.t-btn-add').simulate('click');
 
       expect(container.find('.t-list').contains(item)).toEqual(true);
-
     });
+
 
     it('input after add item is clear', () => {
       const input = container.find('.t-input');
@@ -50,6 +50,7 @@ describe('List', () => {
 
       expect(inputValue).toEqual('');
     });
+    
 
     it('remove item', () => {
       container.find('.t-list__item').first().simulate('click');
