@@ -1,6 +1,5 @@
 function load(localStorageKey) {
   const stringData = window.localStorage.getItem(localStorageKey);
-
   let data = null;
 
   try {
@@ -10,7 +9,6 @@ function load(localStorageKey) {
   }
 
   return data;
-  
 }
 
 function save(localStorageKey, data) {

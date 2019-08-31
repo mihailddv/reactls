@@ -7,25 +7,19 @@ const initialState = {
 
 export default (state = initialState, action) => {
   const { type, success } = action;
-
   switch (type) {
-    
     case loginIn.toString():
       return {
         ...state,
         isAuthorized: success
       };
-
     case loginOut.toString():
       return {
         ...state,
         isAuthorized: false
       };
-
     default: {
       return state;
     }
-
   }
-
 };

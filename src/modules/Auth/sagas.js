@@ -1,8 +1,11 @@
-import { fork, takeLatest, call, put } from "redux-saga/effects";
+import {
+  fork, takeLatest, call, put
+} from "redux-saga/effects";
+import { loadData } from "./api";
 import { updateError, loginIn, loginOut } from "./actions";
 import { save, storageLoggedIn } from "../../storage";
-import { loadData } from "./api";
 
+// Для точной подсказки пользователю, какое поле невалидно
 const messageServer = {
   "Неверный пароль": "password",
   "Неверное имя пользователя": "login"
@@ -10,10 +13,9 @@ const messageServer = {
 
 function* fetchSearchData(action) {
   const { type, payload } = action;
-
   try {
     const response = yield call(loadData, payload);
-
+    // payload Redux-form
     const loginForm = {
       meta: {
         form: "loginForm"
@@ -24,18 +26,13 @@ function* fetchSearchData(action) {
         }
       }
     };
-
     const success = response.success;
-
     yield call(save, storageLoggedIn, response.success);
     yield put({ type: updateError.toString(), ...loginForm });
     yield put({ type, success });
-
-
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
-
 }
 
 function* fetchLogIn(action) {

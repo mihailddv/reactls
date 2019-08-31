@@ -9,7 +9,7 @@ class Layout extends Component {
   render() {
     const { isAuthorized } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Switch>
           <PrivateRoute
             path="/map"
@@ -21,7 +21,7 @@ class Layout extends Component {
           {isAuthorized && <Route path="/profile" component={Profile} />}
           <Redirect to="/login" />
         </Switch>
-      </React.Fragment>
+      </>
     );
   }
 }

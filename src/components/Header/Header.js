@@ -32,53 +32,32 @@ class Header extends PureComponent {
   handleClick = () => {
     const { loginOut } = this.props;
     loginOut();
-  }
+  };
 
   render() {
     const { classes, isAuthorized } = this.props;
     return (
-      <AppBar 
-        position="static"
-        color="default"
-      >
+      <AppBar position="static" color="default">
         <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.grow}
-          >
+          <Typography variant="h6" color="inherit" className={classes.grow}>
             Loft Taxi
           </Typography>
           <NavLink exact to='/map'>
-            <Button className={classes.button}>
-              Карта
-            </Button>
+            <Button className={classes.button}>Карта</Button>
           </NavLink>
           <NavLink exact to={"/profile"}>
-            <Button className={classes.button}>
-              Профиль
-            </Button>
+            <Button className={classes.button}>Профиль</Button>
           </NavLink>
-
           {isAuthorized
-            ? <Button 
-                className={classes.button}
-                onClick={this.handleClick}
-              >
-                Выйти
-              </Button>
+            ? <Button className={classes.button} onClick={this.handleClick}>Выйти</Button>
             : <NavLink exact to='/login'>
-              <Button className={classes.button}>
-                Войти
-              </Button>
+              <Button className={classes.button}>Войти</Button>
             </NavLink>
           }
-
         </Toolbar>
       </AppBar>
     );
   }
-
 }
 
 export default withStyles(styles)(Header);
