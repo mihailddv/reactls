@@ -1,54 +1,37 @@
-import {
-  fork, takeLatest, call, put
-} from "redux-saga/effects";
-import { loadData } from "./api";
-import { updateError, loginIn, loginOut } from "./actions";
-import { save, storageLoggedIn } from "../../storage";
+import { fork, call, take, put, cancel, cancelled } from 'redux-saga/effects';
+import { authRequest, authSuccess, authError, logoutRequest, logoutSuccess } from './actions';
+import { auth } from './api'; 
 
-// Для точной подсказки пользователю, какое поле невалидно
-const messageServer = {
-  "Неверный пароль": "password",
-  "Неверное имя пользователя": "login"
-};
+function *loginFlow() {
+    while(true) {
+        const request = yield take(authRequest);
+        const { user, password } = request.payload;
+        const task = yield fork(authorize, user, password);
+        const action = yield take([logoutRequest, authError]);
 
-function* fetchSearchData(action) {
-  const { type, payload } = action;
-  try {
-    const response = yield call(loadData, payload);
-    // payload Redux-form
-    const loginForm = {
-      meta: {
-        form: "loginForm"
-      },
-      payload: {
-        syncErrors: {
-          [messageServer[response.error]]: response.error
+        if(action.type === logoutRequest.toString()) {
+            yield cancel(task);
+            yield put(logoutSuccess());
         }
-      }
-    };
-    const success = response.success;
-    yield call(save, storageLoggedIn, response.success);
-    yield put({ type: updateError.toString(), ...loginForm });
-    yield put({ type, success });
-  } catch (error) {
-    // console.log(error);
-  }
+    }
 }
 
-function* fetchLogIn(action) {
-  yield fork(fetchSearchData, action);
+const handleCancel = () => {
+
 }
 
-function* clearStorage() {
-  yield call(save, storageLoggedIn, false);
+function *authorize(name, password) {
+    try {
+        const token = yield call(auth, name, password);
+        yield put(authSuccess(token));
+    } catch(error) {
+        const { message } = error;
+        yield put(authError(message));
+    } finally {
+        if(yield cancelled()) {
+            yield call(handleCancel);
+        }
+    }
 }
 
-function* loginWatcher() {
-  yield takeLatest(loginIn, fetchLogIn);
-  yield takeLatest(loginOut, clearStorage);
-}
-
-
-export default function* () {
-  yield fork(loginWatcher);
-}
+export default loginFlow;

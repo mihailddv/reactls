@@ -1,5 +1,26 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-const getAuthState = state => state.auth;
+export const getIsAuthorized = createSelector(
+  state => state.auth.isAuth,
+  isAuth => isAuth
+);
 
-export const getAuth = createSelector(getAuthState, state => state.isAuthorized);
+export const getIsLoading = createSelector(
+  state => state.auth.isLoading,
+  isLoading => isLoading
+);
+
+export const getError = createSelector(
+  state => state.auth.error,
+  error => error
+);
+
+export const getName = createSelector(
+  state => state.auth.name,
+  name => name
+);
+
+export const getPassword = createSelector(
+  state => state.auth.password,
+  password => password
+);

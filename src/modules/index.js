@@ -1,10 +1,12 @@
+import { combineReducers } from 'redux';
 import { fork } from 'redux-saga/effects';
-import { sagas as profileSagas } from './Profile';
-import { sagas as loginSagas } from './Auth';
-import { sagas as selectSagas } from './SelectBlock';
+import auth, { sagas as AuthSagas } from './Auth';
+import navigation, { sagas as NavigationSaga } from './Navigation';
+import profile from './Profile';
 
-export default function* rootSaga() {
-  yield fork(profileSagas);
-  yield fork(loginSagas);
-  yield fork(selectSagas);
+export default combineReducers({ auth, profile, navigation });
+
+export function* rootSaga() {
+    yield fork(AuthSagas);
+    yield fork(NavigationSaga);
 }

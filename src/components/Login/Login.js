@@ -1,101 +1,109 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { Field } from "redux-form";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import fieldTemplate from "../FieldTemplate";
-import { Redirect } from "react-router-dom";
+import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+
+import { Grid, Paper } from '@material-ui/core';
+
+import bg from '../../assets/login-bg.jpg';
+
+import { LoginForm } from './partials';
+import {
+  authRequest,
+  getError,
+  getIsLoading,
+  getIsAuthorized
+} from '../../modules/Auth';
+
+import { withStyles } from '@material-ui/core';
+import { withLoader } from '../../hocs';
+
+import Snackbar from '../Snackbar';
 
 const styles = theme => ({
-  container: {
-    width: "100%"
+  background: {
+    backgroundImage: `url(${bg})`,
+    backgroundPosition: 'top',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    filter: 'blur(3px) grayscale(90%)',
+    height: '100%'
   },
-  card: {
-    maxWidth: 500,
-    margin: "0 auto",
-    marginTop: theme.spacing.unit * 6
+  paper: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%);',
+    width: 400,
+    backgroundColor: '#FFCA28'
   },
-  flexContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "column"
+  error: {
+    backgroundColor: theme.palette.error.dark
   },
-  title: {
-    textAlign: "center"
+  icon: {
+    fontSize: 20
   },
-  pos: {
-    marginBottom: 12
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
+  iconVariant: {
+    opacity: 0.9,
     marginRight: theme.spacing.unit
   },
-  button: {
-    margin: theme.spacing.unit * 3
+  message: {
+    display: 'flex',
+    alignItems: 'center'
   }
 });
 
-class Login extends React.Component {
-  static get propTypes() {
-    return {
-      classes: PropTypes.object.isRequired,
-      loginIn: PropTypes.func.isRequired
-    };
-  }
+class Login extends PureComponent {
+  // todo: remove credentials
+  state = {
+    user: 'test@test.com',
+    password: '123123'
+  };
 
-  handleSubmit = values => {
-    const { loginIn } = this.props;
-    loginIn(values);
+  handleAuthRequest = values => {
+    const { authRequest } = this.props;
+    authRequest(values);
   };
 
   render() {
-    const { classes, handleSubmit, isAuthorized } = this.props;
+    const { classes, error, isAuthorized } = this.props;
+    const { user, password } = this.state;
+
+    if (isAuthorized) return <Redirect to="/profile" />;
+
     return (
-      <div className={classes.container}>
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography
-              variant="h4"
-              className={classes.title}
-              color="default"
-              gutterBottom
-            >
-              Войти
-            </Typography>
-            <form
-              className={classes.flexContainer}
-              onSubmit={handleSubmit(val => this.handleSubmit(val))}
-            >
-              <Field
-                component={fieldTemplate}
-                label="Имя пользователя"
-                placeholder="Имя пользователя"
-                name="login"
-                type="text"
-              />
-              <Field
-                component={fieldTemplate}
-                label="Пароль"
-                placeholder="Пароль"
-                name="password"
-                type="password"
-              />
-              <CardActions>
-                <Button variant="outlined" color="primary" type="submit">
-                  Войти
-                </Button>
-              </CardActions>
-            </form>
-          </CardContent>
-        </Card>
-        {isAuthorized && <Redirect to={"/map"} />}
-      </div>
+      <Fragment>
+        <div className={classes.background} />
+
+        <Grid container direction="column" justify="center" alignItems="center">
+          <Paper className={classes.paper}>
+            <LoginForm
+              user={user}
+              password={password}
+              handleSubmit={this.handleAuthRequest}
+            />
+          </Paper>
+        </Grid>
+
+        {error && <Snackbar message={error} variant="error" />}
+      </Fragment>
     );
   }
 }
 
-export default withStyles(styles)(Login);
+const mapStateToProps = state => ({
+  error: getError(state),
+  isLoading: getIsLoading(state),
+  isAuthorized: getIsAuthorized(state)
+});
+
+const mapDispatchToProps = {
+  authRequest
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withLoader(withStyles(styles)(Login)));

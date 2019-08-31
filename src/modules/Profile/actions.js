@@ -1,3 +1,5 @@
-import { createAction } from "redux-actions";
+import { createAction } from 'redux-actions'
 
-export const saveProfile = createAction("@@profile/SET_SUBMIT_SUCCEEDED");
+export const saveProfileRequest = createAction('SET_PROFILE_REQUEST');
+export const saveProfileSuccess = createAction('SET_PROFILE_SUCCESS');
+export const saveProfileFailure = createAction('SET_PROFILE_FAILURE');

@@ -1,87 +1,128 @@
-import React, { Component } from "react";
-import propTypes from "prop-types";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/es/Paper/Paper";
-import Typography from "@material-ui/core/es/Typography/Typography";
-import ReduxForm from "../ReduxForm";
-import Button from "@material-ui/core/es/Button/Button";
-import { NavLink } from "react-router-dom";
+import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'react-redux';
+
+import { Grid, Paper } from '@material-ui/core';
+
+import bg from '../../assets/login-bg.jpg';
+
+import { ProfileForm } from './partials';
+import {
+  getError,
+  getIsLoading,
+  getProfile,
+  saveProfileSuccess
+} from '../../modules/Profile';
+
+import { withStyles } from '@material-ui/core';
+import { withLoader } from '../../hocs';
+
+import Snackbar from '../Snackbar';
 
 const styles = theme => ({
-  container: {
-    width: "100%"
+  background: {
+    backgroundImage: `url(${bg})`,
+    backgroundPosition: 'top',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    filter: 'blur(3px) grayscale(90%)',
+    height: '100%'
   },
-  root: {
+  paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 6,
-    maxWidth: 800,
-    margin: "0 auto"
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%);',
+    width: 1000,
+    backgroundColor: '#FFCA28'
   },
-  pos: {
-    marginBottom: 15
+  error: {
+    backgroundColor: theme.palette.error.dark
   },
-  title: {
-    textAlign: "center"
+  icon: {
+    fontSize: 20
   },
-  buttonToMap: {
-    marginTop: theme.spacing.unit * 3
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center'
   }
 });
 
-class Profile extends Component {
+class Profile extends PureComponent {
   state = {
-    isAlert: false
+    notificationVisible: false,
   };
 
-  static get defaultProps() {
-    return {
-      classes: propTypes.object.isRequired
-    };
-  }
-
-  showAlert = () => {
+  handleProfileSave = values => {
+    const { saveProfileSuccess } = this.props;
+    saveProfileSuccess(values);
+    
     this.setState({
-      isAlert: !this.state.isAlert
+      notificationVisible: true
     });
+
+    setTimeout(x => {
+      this.setState({
+        notificationVisible: false, 
+      })
+    }, 2000);
+    
   };
 
   render() {
-    const { classes } = this.props;
-    const { isAlert } = this.state;
+    const { classes, error, profile } = this.props;
+    const { cardName, cardNumber, expDate, cvv } = profile;
+    const { notificationVisible } = this.state;
     return (
-      <div className={classes.container}>
-        <Paper className={classes.root} elevation={1}>
-          <Typography
-            variant="h4"
-            component="h2"
-            className={classNames(classes.pos, classes.title)}
-          >
-            Профиль
-          </Typography>
-          <Typography variant={!isAlert ? "h6" : "subtitle1"} component="p">
-            {!isAlert
-              ? "Способ оплаты"
-              : "Платёжные данные обновлены. Теперь вы можете заказывать такси."}
-          </Typography>
-          {!isAlert ? (
-            <ReduxForm alertHandle={this.showAlert} />
-          ) : (
-            <Button
-              className={classes.buttonToMap}
-              variant="outlined"
-              color="primary"
-              onClick={this.showAlert}
-            >
-              <NavLink to="/map">Перейти на карту</NavLink>
-            </Button>
-          )}
-        </Paper>
-      </div>
+      <Fragment>
+        <div className={classes.background} />
+
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Paper className={classes.paper}>
+            <ProfileForm
+              cardName={cardName}
+              cardNumber={cardNumber}
+              expDate={expDate}
+              cvv={cvv}
+              handleSubmit={this.handleProfileSave}
+            />
+          </Paper>
+        </Grid>
+        {notificationVisible && (
+          <Snackbar
+            message="Профиль успешно сохранен. Теперь вы можете заказать такси"
+            variant="success"
+            open={notificationVisible}
+          />
+        )}
+        {error && <Snackbar message={error} variant="error" />}
+      </Fragment>
     );
   }
 }
 
-export default withStyles(styles)(Profile);
+const mapStateToProps = state => ({
+  error: getError(state),
+  isLoading: getIsLoading(state),
+  profile: getProfile(state)
+});
+
+const mapDispatchToProps = {
+  saveProfileSuccess
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withLoader(withStyles(styles)(Profile)));
