@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { logout, getIsAuthorized } from '../../../../modules/Auth';
-
 import NavBar from './NavBar';
 
 const Header = ({ isAuthorized, logout }) => {
   return (
-    <div>
-      <NavBar isAuthorized={isAuthorized} logout={logout} />
-    </div>
+    <React.Fragment>
+      <NavBar
+        isAuthorized={isAuthorized}
+        logout={logout}
+      />
+    </React.Fragment>
   );
 };
 

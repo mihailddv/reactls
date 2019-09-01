@@ -19,9 +19,11 @@ class Login extends Component {
     errorPass: false,
     loadingForm: false
   };
+
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value });
   };
+
   validate = () => {
     const { username, password } = this.state;
     this.setState({ errorName: false, errorPass: false });
@@ -35,10 +37,14 @@ class Login extends Component {
 
   handleSend = () => {
     this.setState({ loadingForm: true });
+
     const { username, password, errorName, errorPass } = this.state;
     const { loginRequest } = this.props;
+
     this.validate();
-    if (!errorName && !errorPass) loginRequest({ username, password });
+    if (!errorName && !errorPass) {
+      loginRequest({ username, password });
+    } 
     this.setState({ loadingForm: false });
   };
 
@@ -51,16 +57,23 @@ class Login extends Component {
       errorPass,
       loadingForm
     } = this.state;
+
     if (isAuthorized) {
       return <Redirect to="/map" />;
     }
+
     return (
       <Grid container alignItems="center" justify="center">
         <Grid item xs={3}>
           <Paper className="login-form">
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography component="h1" variant="h4" align="center">
+                <Typography 
+                  className="login-form__title"
+                  component="h1" 
+                  variant="h4" 
+                  align="center"
+                >
                   Войти
                 </Typography>
               </Grid>
@@ -72,6 +85,7 @@ class Login extends Component {
                       placeholder="Имя пользователя"
                       name="username"
                       value={username}
+                      // value="test@test.com"
                       onChange={this.handleChange}
                       error={errorName}
                     />
@@ -86,9 +100,11 @@ class Login extends Component {
                       error={errorPass}
                     />
                   </Form.Field>
-                  <br />
-                  <br />
-                  <Button color="blue" type="submit" loading={loadingForm}>
+                  <Button 
+                    color="red"
+                    type="submit"
+                    loading={loadingForm}
+                  >
                     Войти
                   </Button>
                 </Form>

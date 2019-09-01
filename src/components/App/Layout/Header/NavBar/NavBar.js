@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
 import { withStyles } from "@material-ui/core/styles";
 import { Button, Segment, Header } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+
+
 const styles = {
   root: {
     flexGrow: 1
@@ -29,7 +29,7 @@ class NavBar extends Component {
   renderMenu = () => {
     return (
       <React.Fragment>
-        <Button.Group floated="right" color="blue">
+        <Button.Group floated="right" color="red">
           <Button as="a" href="/map">
             Карта
           </Button>
@@ -41,11 +41,13 @@ class NavBar extends Component {
       </React.Fragment>
     );
   };
+
   render() {
     const { isAuthorized, classes } = this.props;
+
     return (
       <div className={classes.root}>
-        <Segment color="blue" style={styles.NavBar}>
+        <Segment color="red" style={styles.NavBar}>
           <Header as="h2" floated="left">
             Loft Taxi
           </Header>
@@ -53,6 +55,7 @@ class NavBar extends Component {
         </Segment>
       </div>
     );
+    
   }
 }
 

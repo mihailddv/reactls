@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Grid from "@material-ui/core/Grid";
 import { Paper, Typography } from "@material-ui/core";
@@ -9,7 +8,11 @@ const EmptyInformationProfile = () => {
     <Paper>
       <Grid container spacing={24}>
         <Grid item xs={12}>
-          <Typography component="h1" variant="h4" align="left">
+          <Typography 
+            component="h1" 
+            variant="h4" 
+            align="left"
+          >
             Заполните платежные данные
           </Typography>
         </Grid>
@@ -20,9 +23,7 @@ const EmptyInformationProfile = () => {
         </Grid>
         <Grid item xs={12}>
           <Button
-            color="blue"
-            // variant="outlined"
-            // component={Link}
+            color="red"
             to="/profile"
           >
             Перейти в профиль.

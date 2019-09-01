@@ -20,8 +20,8 @@ class Map extends Component {
     this.map = new mapboxgl.Map({
       container: this.mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v9',
-      center: [30.2656504, 59.8029126],
-      zoom: 15
+      center: [30.3158, 59.9391],
+      zoom: 12
     });
   }
 
