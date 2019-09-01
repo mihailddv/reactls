@@ -11,3 +11,11 @@
   text-align: center;
 }
 
+.form__input {
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+
+.form__input.input.error > input {
+  border: 1px solid red;
+}

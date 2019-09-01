@@ -94,7 +94,7 @@ class Login extends Component {
                 <Form onSubmit={this.handleSend}>
                   <Form.Field required>
                     <Input
-                      focus
+                      className="form__input"
                       placeholder="Логин или email"
                       name="username"
                       value={username}
@@ -105,6 +105,7 @@ class Login extends Component {
                   </Form.Field>
                   <Form.Field required>
                     <Input
+                      className="form__input"
                       placeholder="Пароль"
                       name="password"
                       type="password"
