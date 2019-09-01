@@ -1,0 +1,20 @@
+.info {
+  background: #fff;
+  position: absolute;
+  z-index: 2;
+  top: 100px;
+  left: 30px;
+  width: 500px;
+  padding: 30px;
+
+  &__title {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    font-size: 20px;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
+}

@@ -3,7 +3,7 @@ import { Button } from "semantic-ui-react";
 // import EditProfile from '../../Profile/EditProfile';
 // import Grid from "@material-ui/core/Grid";
 // import { Paper } from "@material-ui/core";
-import './Info.css';
+import './Info.scss';
 
 const Info = () => {
   return (
@@ -11,12 +11,13 @@ const Info = () => {
       <div className="info__title">Заполните платежные данные</div>
       <div className="info__text">Укажите информацию о банковской карте, чтобы сделать заказ.</div>
       <Button
+        as="a"
         color="red"
-        // to="/profile"
-        path="/profile"
+        to="/profile"
+        // path="/profile"
         // component={EditProfile}
       >
-        Перейти в профиль.
+        Перейти в профиль
       </Button>
     </div>
   );
