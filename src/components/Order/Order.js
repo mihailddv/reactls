@@ -6,7 +6,7 @@ import SetAddress from './SetAddress';
 import OrderSuccess from './OrderSuccess';
 import Info from '../Profile/Info';
 
-import './Order.css';
+import './Order.scss';
 
 class Order extends Component {
   createOrder = (fromWhere, toWhere) => {

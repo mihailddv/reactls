@@ -3,6 +3,9 @@ import Select from "react-select";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import { Button, Segment } from "semantic-ui-react";
+import './Order.scss';
+
+
 class SetAddress extends Component {
   state = {
     fromWhere: null,
@@ -40,40 +43,41 @@ class SetAddress extends Component {
     );
 
     return (
-      <Segment>
-        <Grid container spacing={24}>
-          <Grid item xs={12}>
-            <Typography component="h1" variant="h4" align="left">
-              Вызов такси
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
+      <div className="call">
+        <div className="call__content">
+          <div className="call__caption">
+            Вызов такси
+          </div>
+
+          <div className="call__item">
             <Select
               isClearable
               value={fromWhere}
               onChange={this.setFromWhere}
               options={variants}
+              placeholder="Выберите адрес отправления"
             />
-          </Grid>
-          <Grid item xs={12}>
+          </div>
+          <div className="call__item">
             <Select
               isClearable
               value={toWhere}
               onChange={this.setToWhere}
               options={variants}
+              placeholder="Выберите адрес прибытия"
             />
-          </Grid>
-          <Grid item xs={12}>
+          </div>
+          <div className="call__item">
             <Button
-              color="blue"
+              color="red"
               disabled={!fromWhere && !toWhere}
               onClick={this.createOrder}
             >
               Вызвать такси
             </Button>
-          </Grid>
-        </Grid>
-      </Segment>
+          </div>
+        </div>
+      </div>
     );
   }
 }
