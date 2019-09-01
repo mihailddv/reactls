@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-// import { Form, Field } from "react-final-form";
 import { connect } from "react-redux";
 import { loginRequest, getIsAuthorized } from "../../modules/Auth";
-
 import { Button, Input, Form } from "semantic-ui-react";
 import Grid from "@material-ui/core/Grid";
 import { Typography, Paper } from "@material-ui/core";
@@ -26,13 +24,24 @@ class Login extends Component {
 
   validate = () => {
     const { username, password } = this.state;
-    this.setState({ errorName: false, errorPass: false });
+
+    this.setState({ 
+      errorName: false,
+      errorPass: false
+    });
+
     if (username !== "test@test.com") {
-      this.setState({ errorName: true });
+      this.setState({
+        errorName: true
+      });
     }
+
     if (password !== "123123") {
-      this.setState({ errorPass: true });
+      this.setState({
+        errorPass: true
+      });
     }
+
   };
 
   handleSend = () => {
@@ -42,9 +51,11 @@ class Login extends Component {
     const { loginRequest } = this.props;
 
     this.validate();
+
     if (!errorName && !errorPass) {
       loginRequest({ username, password });
     } 
+
     this.setState({ loadingForm: false });
   };
 
@@ -59,7 +70,9 @@ class Login extends Component {
     } = this.state;
 
     if (isAuthorized) {
-      return <Redirect to="/map" />;
+      return (
+        <Redirect to="/map" />
+      );
     }
 
     return (
@@ -67,22 +80,22 @@ class Login extends Component {
         <Grid item xs={3}>
           <Paper className="login-form">
             <Grid container spacing={24}>
-              <Grid item xs={12}>
+              <div className="login-form__caption">
                 <Typography 
                   className="login-form__title"
-                  component="h1" 
+                  component="h2" 
                   variant="h4" 
                   align="center"
                 >
                   Войти
                 </Typography>
-              </Grid>
+              </div>
               <Grid item xs={12}>
                 <Form onSubmit={this.handleSend}>
                   <Form.Field required>
                     <Input
                       focus
-                      placeholder="Имя пользователя"
+                      placeholder="Логин или email"
                       name="username"
                       value={username}
                       // value="test@test.com"
