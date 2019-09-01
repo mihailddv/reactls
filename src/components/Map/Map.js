@@ -1,234 +1,88 @@
-/* eslint-disable max-statements */
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import MapGL, { FlyToInterpolator } from 'react-map-gl';
-import { Grid, Paper } from '@material-ui/core';
+import { getAddressList, getMapCoordinates } from '../../modules/Map';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import Order from '../Order';
 
-import bg from '../../assets/login-bg.jpg';
+import './Map.css';
 
-import { MapForm, Notification, Deny, PolylineOverlay } from './partials';
-import {
-  getAddressList,
-  getRoute,
-  routeRequest,
-  addressListRequest
-} from '../../modules/Navigation';
-
-import { getIsFilled } from '../../modules/Profile';
-
-import { withStyles } from '@material-ui/core';
-import { withLoader } from '../../hocs';
-
-import Snackbar from '../Snackbar';
-
-const MAPBOX_TOKEN =
-  'pk.eyJ1IjoicmF3bGV4IiwiYSI6ImNqdnNmdG5zazEzbTk0OW96bHQxNGlzdWsifQ.qZpHYGgkyA7W4OxD1y42oQ';
-
-const styles = theme => ({
-  background: {
-    backgroundImage: `url(${bg})`,
-    backgroundPosition: 'top',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    filter: 'blur(3px) grayscale(90%)',
-    height: '100%'
-  },
-  map: {
-    height: '100%'
-  },
-  paper: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    position: 'absolute',
-    top: '15%',
-    left: '10%',
-    transform: 'translate(-15%, -10%);',
-    width: 700,
-    backgroundColor: '#FFCA28'
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing.unit
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-});
-
-class Map extends PureComponent {
-  state = {
-    viewport: {
-      latitude: 56,
-      longitude: 38,
-      zoom: 20,
-      bearing: 0,
-      pitch: 0,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      layers: [
-        {
-          id: 'water',
-          source: 'mapbox-streets',
-          'source-layer': 'water',
-          type: 'fill',
-          paint: {
-            'fill-color': '#00ffff'
-          }
-        }
-      ]
-    },
-    isOrderInProgress: false,
-    error: ''
-  };
+class Map extends Component {
+  map = null;
+  mapContainer = React.createRef();
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize);
-    const { addressList, addressListRequest } = this.props;
-    if (addressList) return;
-    addressListRequest();
+    const { getAddressList } = this.props;
+    getAddressList();
+
+    mapboxgl.accessToken =
+      'pk.eyJ1IjoibWlyemFwdWxhdG92IiwiYSI6ImNqcjdnOHJ6MzA1Nmk0M284Zng0NzB1cWYifQ.-wVWVa4l6r6xT7Cv1_iNrA';
+    this.map = new mapboxgl.Map({
+      container: this.mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [30.2656504, 59.8029126],
+      zoom: 15
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { coordinates } = this.props;
+    if (
+      JSON.stringify(coordinates) !== JSON.stringify(prevProps.coordinates) &&
+      coordinates.length
+    ) {
+      this.map.flyTo({
+        center: coordinates[0],
+        zoom: 15
+      });
+      this.map.addLayer({
+        id: 'track',
+        type: 'line',
+        source: {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates
+            }
+          }
+        },
+        paint: {
+          'line-color': '#a00',
+          'line-width': 5
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
+    this.map.remove();
   }
 
-  resize = () => {
-    const { viewport } = this.state;
-    const { width, height } = this.props;
-
-    this.setState({
-      viewport: {
-        ...viewport,
-        width: width || window.innerWidth,
-        height: height || window.innerHeight
-      }
-    });
-  };
-
-  handleNewOrder = () => {
-    this.setState({
-      isOrderInProgress: false
-    });
-  };
-
-  handleCallTaxi = values => {
-    this.setState({
-      error: ''
-    });
-
-    const { address1, address2 } = values;
-    const { routeRequest, route } = this.props;
-
-    if (address1 === address2) {
-      this.setState({
-        error: 'Пункт отправления и пункт назначения не должны совпадать'
-      });
-      return;
-    }
-
-    routeRequest(values);
-
-    this.setState({
-      isOrderInProgress: true
-    });
-
-    setTimeout(x => {
-      if (route) {
-        this._goToViewport(route[route.length - 1]);
-      }
-    }, 500);
-  };
-
-  _onViewportChange = viewport => {
-    const { viewport: prev } = this.state;
-    this.setState({
-      viewport: { ...prev, ...viewport }
-    });
-  };
-
-  _goToViewport = ([longitude, latitude]) => {
-    this._onViewportChange({
-      longitude,
-      latitude,
-      zoom: 11,
-      transitionInterpolator: new FlyToInterpolator(),
-      transitionDuration: 3000
-    });
-  };
-
-  renderMap = () => {
-    const { classes, route } = this.props;
-    const { viewport } = this.state;
-
-    return (
-      <div>
-        <MapGL
-          {...viewport}
-          className={classes.map}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-          onViewportChange={this._onViewportChange}
-        >
-          <PolylineOverlay points={route} />
-        </MapGL>
-      </div>
-    );
-  };
-
-  renderInner = () => {
-    const { isOrderInProgress } = this.state;
-    const { addressList, isFilled } = this.props;
-
-    if (isOrderInProgress) {
-      return <Notification handleButtonClick={this.handleNewOrder} />;
-    }
-
-    if (!isFilled) {
-      return <Deny />;
-    }
-
-    return (
-      <MapForm addressList={addressList} handleSubmit={this.handleCallTaxi} />
-    );
+  removeLayer = () => {
+    this.map.removeLayer('track');
+    this.map.removeSource('track');
   };
 
   render() {
-    const { classes } = this.props;
-    const { error } = this.state;
-
     return (
       <Fragment>
-        {this.renderMap()}
-
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Paper className={classes.paper}>{this.renderInner()}</Paper>
-        </Grid>
-
-        {error && <Snackbar message={error} variant="error" />}
+        <Order removeLayer={this.removeLayer} />
+        <div
+          className='map'
+          style={{ height: window.innerHeight - 65 }}
+          ref={this.mapContainer}
+        />
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  addressList: getAddressList(state),
-  route: getRoute(state),
-  isFilled: getIsFilled(state)
-});
-
-const mapDispatchToProps = {
-  addressListRequest,
-  routeRequest
-};
+const mapStateToProps = state => ({ coordinates: getMapCoordinates(state) });
+const mapDispatchToProps = { getAddressList };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withLoader(withStyles(styles)(Map)));
+)(Map);

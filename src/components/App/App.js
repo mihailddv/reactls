@@ -1,19 +1,16 @@
-import React, { PureComponent } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import Layout from '../Layout';
-import Header from '../Header';
-import Router from '../Router';
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Layout from './Layout';
+import PrivateRoute from '../Router/PrivateRouter';
+import AppRouter from '../Router/AppRouter';
+import Login from '../Login';
 
-class App extends PureComponent {
-  render() {
-    return (
-      <BrowserRouter>
-        <Layout header={Header}>
-          <Router />
-        </Layout>
-      </BrowserRouter>
-    );
-  }
-}
-
-export default App;
+export default () => (
+  <Layout>
+    <Switch>
+      <Route path='/login' component={Login} />
+      <PrivateRoute path='/' component={AppRouter} />
+      <Redirect to='/login' />
+    </Switch>
+  </Layout>
+);

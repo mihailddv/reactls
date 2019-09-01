@@ -1,109 +1,110 @@
-import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+// import { Form, Field } from "react-final-form";
+import { connect } from "react-redux";
+import { loginRequest, getIsAuthorized } from "../../modules/Auth";
 
-import { Grid, Paper } from '@material-ui/core';
+import { Button, Input, Form } from "semantic-ui-react";
+import Grid from "@material-ui/core/Grid";
+import { Typography, Paper } from "@material-ui/core";
+// import { input } from "../helpers/Fields";
 
-import bg from '../../assets/login-bg.jpg';
+import "./Login.css";
 
-import { LoginForm } from './partials';
-import {
-  authRequest,
-  getError,
-  getIsLoading,
-  getIsAuthorized
-} from '../../modules/Auth';
-
-import { withStyles } from '@material-ui/core';
-import { withLoader } from '../../hocs';
-
-import Snackbar from '../Snackbar';
-
-const styles = theme => ({
-  background: {
-    backgroundImage: `url(${bg})`,
-    backgroundPosition: 'top',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    filter: 'blur(3px) grayscale(90%)',
-    height: '100%'
-  },
-  paper: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%);',
-    width: 400,
-    backgroundColor: '#FFCA28'
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing.unit
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-});
-
-class Login extends PureComponent {
-  // todo: remove credentials
+class Login extends Component {
   state = {
-    user: 'test@test.com',
-    password: '123123'
+    username: "",
+    password: "",
+    errorName: false,
+    errorPass: false,
+    loadingForm: false
+  };
+  handleChange = (e, { name, value }) => {
+    this.setState({ [name]: value });
+  };
+  validate = () => {
+    const { username, password } = this.state;
+    this.setState({ errorName: false, errorPass: false });
+    if (username !== "test@test.com") {
+      this.setState({ errorName: true });
+    }
+    if (password !== "123123") {
+      this.setState({ errorPass: true });
+    }
   };
 
-  handleAuthRequest = values => {
-    const { authRequest } = this.props;
-    authRequest(values);
+  handleSend = () => {
+    this.setState({ loadingForm: true });
+    const { username, password, errorName, errorPass } = this.state;
+    const { loginRequest } = this.props;
+    this.validate();
+    if (!errorName && !errorPass) loginRequest({ username, password });
+    this.setState({ loadingForm: false });
   };
 
   render() {
-    const { classes, error, isAuthorized } = this.props;
-    const { user, password } = this.state;
-
-    if (isAuthorized) return <Redirect to="/profile" />;
-
+    const { isAuthorized } = this.props;
+    const {
+      username,
+      password,
+      errorName,
+      errorPass,
+      loadingForm
+    } = this.state;
+    if (isAuthorized) {
+      return <Redirect to="/map" />;
+    }
     return (
-      <Fragment>
-        <div className={classes.background} />
-
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Paper className={classes.paper}>
-            <LoginForm
-              user={user}
-              password={password}
-              handleSubmit={this.handleAuthRequest}
-            />
+      <Grid container alignItems="center" justify="center">
+        <Grid item xs={3}>
+          <Paper className="login-form">
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <Typography component="h1" variant="h4" align="center">
+                  Войти
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Form onSubmit={this.handleSend}>
+                  <Form.Field required>
+                    <Input
+                      focus
+                      placeholder="Имя пользователя"
+                      name="username"
+                      value={username}
+                      onChange={this.handleChange}
+                      error={errorName}
+                    />
+                  </Form.Field>
+                  <Form.Field required>
+                    <Input
+                      placeholder="Пароль"
+                      name="password"
+                      type="password"
+                      value={password}
+                      onChange={this.handleChange}
+                      error={errorPass}
+                    />
+                  </Form.Field>
+                  <br />
+                  <br />
+                  <Button color="blue" type="submit" loading={loadingForm}>
+                    Войти
+                  </Button>
+                </Form>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
-
-        {error && <Snackbar message={error} variant="error" />}
-      </Fragment>
+      </Grid>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  error: getError(state),
-  isLoading: getIsLoading(state),
-  isAuthorized: getIsAuthorized(state)
-});
-
-const mapDispatchToProps = {
-  authRequest
-};
+const mapStateToProps = state => ({ isAuthorized: getIsAuthorized(state) });
+const mapDispatchToProps = { loginRequest };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withLoader(withStyles(styles)(Login)));
+)(Login);

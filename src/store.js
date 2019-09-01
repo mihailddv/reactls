@@ -2,34 +2,19 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
-  key: 'root',
-  storage
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-const createAppStore = () => {
-  const sagaMiddleware = createSagaMiddleware();
-
+export default () => {
   const store = createStore(
-    persistedReducer,
+    rootReducer,
     compose(
       applyMiddleware(sagaMiddleware),
       window.__REDUX_DEVTOOLS_EXTENSION__
         ? window.__REDUX_DEVTOOLS_EXTENSION__()
-        : f => f
+        : noop => noop
     )
   );
 
   sagaMiddleware.run(rootSaga);
-
-  let persistor = persistStore(store);
-
-  return { store, persistor };
+  return store;
 };
-
-export default createAppStore;

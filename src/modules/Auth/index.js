@@ -1,5 +1,4 @@
-export { default as sagas } from './sagas';
-export { default } from './auth';
-export * from './auth';
+export { default } from './Auth';
+export * from './Auth';
 export * from './actions';
-export * from './selectors'; 
+export { default as sagas } from './sagas';

@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux';
 import { fork } from 'redux-saga/effects';
-import auth, { sagas as AuthSagas } from './Auth';
-import navigation, { sagas as NavigationSaga } from './Navigation';
-import profile from './Profile';
+import auth, { sagas as authSagas } from './Auth';
+import map, { sagas as mapSagas } from './Map';
+import order, { sagas as orderSagas } from './Order';
+import user, { sagas as userSagas } from './Profile';
 
-export default combineReducers({ auth, profile, navigation });
+export default combineReducers({ auth, map, order, user });
 
 export function* rootSaga() {
-    yield fork(AuthSagas);
-    yield fork(NavigationSaga);
+  yield fork(authSagas);
+  yield fork(mapSagas);
+  yield fork(orderSagas);
+  yield fork(userSagas);
 }

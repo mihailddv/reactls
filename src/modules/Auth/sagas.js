@@ -1,37 +1,32 @@
-import { fork, call, take, put, cancel, cancelled } from 'redux-saga/effects';
-import { authRequest, authSuccess, authError, logoutRequest, logoutSuccess } from './actions';
-import { auth } from './api'; 
+import { takeEvery, put, call } from "redux-saga/effects";
+import {
+  loginRequest,
+  loginSuccessRequest,
+  loginFailureRequest,
+  logout
+} from "./actions";
+import { login as loginRequestAPI } from "./api";
 
-function *loginFlow() {
-    while(true) {
-        const request = yield take(authRequest);
-        const { user, password } = request.payload;
-        const task = yield fork(authorize, user, password);
-        const action = yield take([logoutRequest, authError]);
-
-        if(action.type === logoutRequest.toString()) {
-            yield cancel(task);
-            yield put(logoutSuccess());
-        }
+function* loginHandler(action) {
+  const { username, password } = action.payload;
+  try {
+    const response = yield call(loginRequestAPI, username, password);
+    if (response.success) {
+      window.localStorage.setItem("isAuthorized", true);
+      yield put(loginSuccessRequest());
+    } else {
+      yield put(loginFailureRequest());
     }
+  } catch (error) {
+    yield put(loginFailureRequest());
+  }
 }
 
-const handleCancel = () => {
-
+function* logoutHandler(action) {
+  yield window.localStorage.setItem("isAuthorized", false);
 }
 
-function *authorize(name, password) {
-    try {
-        const token = yield call(auth, name, password);
-        yield put(authSuccess(token));
-    } catch(error) {
-        const { message } = error;
-        yield put(authError(message));
-    } finally {
-        if(yield cancelled()) {
-            yield call(handleCancel);
-        }
-    }
+export default function*() {
+  yield takeEvery(loginRequest, loginHandler);
+  yield takeEvery(logout, logoutHandler);
 }
-
-export default loginFlow;
