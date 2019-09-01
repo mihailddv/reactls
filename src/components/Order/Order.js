@@ -4,7 +4,7 @@ import { createOrder, cancelOrder } from '../../modules/Order';
 
 import SetAddress from './SetAddress';
 import OrderSuccess from './OrderSuccess';
-import EmptyInformationProfile from '../Profile/EmptyInformationProfile';
+import Info from '../Profile/Info';
 
 import './Order.css';
 
@@ -31,7 +31,7 @@ class Order extends Component {
     if (!user.userInfo) {
       return (
         <div className='setAddres'>
-          <EmptyInformationProfile />
+          <Info />
         </div>
       );
     }
