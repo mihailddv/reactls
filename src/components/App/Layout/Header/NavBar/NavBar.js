@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, Segment, Header } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import "./Nav.css";
 
 
 const styles = {
@@ -10,10 +11,6 @@ const styles = {
   },
   grow: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginRight: 20,
-    marginLeft: -12
   },
   NavBar: {
     position: "fixed",
@@ -29,14 +26,14 @@ class NavBar extends Component {
   renderMenu = () => {
     return (
       <React.Fragment>
-        <Button.Group floated="right" color="red">
-          <Button as="a" href="/map">
+        <Button.Group className="nav" floated="right" color="red">
+          <Button className="nav__item" as="a" href="/map">
             Карта
           </Button>
-          <Button as="a" href="/profile">
+          <Button className="nav__item" as="a" href="/profile">
             Профиль
           </Button>
-          <Button onClick={this.logout}>Выход</Button>
+          <Button className="nav__item" onClick={this.logout}>Выход</Button>
         </Button.Group>
       </React.Fragment>
     );

@@ -1,0 +1,13 @@
+.nav {
+  display: flex;
+}
+
+.nav__item.ui.button {
+  margin-left: 30px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.nav__item.ui.button:last-child {
+  background: #000;
+}
