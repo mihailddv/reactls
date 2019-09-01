@@ -13,9 +13,7 @@ const Info = () => {
       <Button
         as="a"
         color="red"
-        to="/profile"
-        // path="/profile"
-        // component={EditProfile}
+        href="/profile"
       >
         Перейти в профиль
       </Button>

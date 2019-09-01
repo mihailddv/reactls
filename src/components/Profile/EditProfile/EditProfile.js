@@ -3,7 +3,7 @@ import EditFrom from './EditFrom';
 import EditFormSuccess from './EditFormSuccess';
 import Grid from '@material-ui/core/Grid';
 import { Paper, Typography } from '@material-ui/core';
-import './EditProfile.css';
+import './EditProfile.scss';
 
 class EditProfile extends Component {
   state = {

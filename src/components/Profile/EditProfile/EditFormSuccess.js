@@ -13,7 +13,11 @@ const EditFormSuccess = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Button as="a" color="blue" href="/map">
+        <Button
+          as="a"
+          color="red"
+          href="/map"
+        >
           Перейти на карту
         </Button>
       </Grid>

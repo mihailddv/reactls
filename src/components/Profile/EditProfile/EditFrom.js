@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Form, Field } from "react-final-form";
 import { input } from "../../helpers/Fields";
-
 import Grid from "@material-ui/core/Grid";
 import { editProfile } from "../../../modules/Profile";
 import { Button } from "semantic-ui-react";
-
-import "./EditProfile.css";
+import "./EditProfile.scss";
 
 const validate = values => {
   const errors = {};
@@ -66,9 +64,9 @@ class EditForm extends Component {
         initialValues={userInfo}
         validate={validate}
         render={({ handleSubmit, pristine, invalid }) => (
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
-              <Grid item xs={12} md={6}>
+          <form className="form-edit" onSubmit={handleSubmit}>
+            <Grid className="form-edit__container" container spacing={24}>
+              <div className="form-edit__item">
                 <Field
                   component={input}
                   required
@@ -76,8 +74,8 @@ class EditForm extends Component {
                   label="Имя владельца"
                   fullWidth
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </div>
+              <div className="form-edit__item">
                 <Field
                   component={input}
                   required
@@ -86,8 +84,8 @@ class EditForm extends Component {
                   parse={ccFormat}
                   fullWidth
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </div>
+              <div className="form-edit__item">
                 <Field
                   component={input}
                   type="date"
@@ -99,8 +97,8 @@ class EditForm extends Component {
                   }}
                   fullWidth
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </div>
+              <div className="form-edit__item">
                 <Field
                   component={input}
                   required
@@ -108,10 +106,13 @@ class EditForm extends Component {
                   label="CVV"
                   fullWidth
                 />
-              </Grid>
+              </div>
             </Grid>
-            <br />
-            <Button color="blue" type="submit" disabled={pristine || invalid}>
+            <Button 
+              color="red" 
+              type="submit" 
+              disabled={pristine || invalid}
+            >
               Сохранить
             </Button>
           </form>
