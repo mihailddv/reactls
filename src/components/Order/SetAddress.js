@@ -8,38 +8,40 @@ import './Order.scss';
 
 class SetAddress extends Component {
   state = {
-    fromWhere: null,
-    toWhere: null
+    fromAddr: null,
+    toAddr: null
   };
 
-  setFromWhere = place => {
+  setFromAddr = place => {
     this.setState({
-      fromWhere: place
+      fromAddr: place
     });
   };
 
-  setToWhere = place => {
+  setToAddr = place => {
     this.setState({
-      toWhere: place
+      toAddr: place
     });
   };
 
   createOrder = () => {
-    const { fromWhere, toWhere } = this.state;
+    const { fromAddr, toAddr } = this.state;
 
-    if (fromWhere && toWhere)
-      this.props.createOrder(fromWhere.value, toWhere.value);
+    if (fromAddr && toAddr) {
+      this.props.createOrder(fromAddr.value, toAddr.value);
+    }
+      
   };
 
   render() {
-    const { fromWhere, toWhere } = this.state;
+    const { fromAddr, toAddr } = this.state;
 
     const {
       map: { routeVarians }
     } = this.props;
 
     const variants = routeVarians.filter(
-      variant => !~[fromWhere, toWhere].indexOf(variant)
+      variant => !~[fromAddr, toAddr].indexOf(variant)
     );
 
     return (
@@ -53,8 +55,8 @@ class SetAddress extends Component {
             <Select
               className="call__select"
               isClearable
-              value={fromWhere}
-              onChange={this.setFromWhere}
+              value={fromAddr}
+              onChange={this.setFromAddr}
               options={variants}
               placeholder="Выберите адрес отправления"
             />
@@ -63,8 +65,8 @@ class SetAddress extends Component {
             <Select
               className="call__select"
               isClearable
-              value={toWhere}
-              onChange={this.setToWhere}
+              value={toAddr}
+              onChange={this.setToAddr}
               options={variants}
               placeholder="Выберите адрес прибытия"
             />
@@ -72,7 +74,7 @@ class SetAddress extends Component {
           <div className="call__item">
             <Button
               color="red"
-              disabled={!fromWhere && !toWhere}
+              disabled={!fromAddr || !toAddr}
               onClick={this.createOrder}
             >
               Вызвать такси

@@ -14,10 +14,7 @@ const validate = values => {
     errors.cardNumber = "В номере карты 16 цифр";
   }
 
-  if (
-    values.cardNumber &&
-    isNaN(Number(values.cardNumber.replace(/\s/g, "")))
-  ) {
+  if (values.cardNumber && isNaN(Number(values.cardNumber.replace(/\s/g, ""))) ) {
     errors.cardNumber = "Может содержать только цифры";
   }
 
@@ -33,10 +30,10 @@ const validate = values => {
 };
 
 const ccFormat = value => {
-  var v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-  var matches = v.match(/\d{4,16}/g);
-  var match = (matches && matches[0]) || "";
-  var parts = [];
+  let v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, ""),
+      matches = v.match(/\d{4,16}/g),
+      match = (matches && matches[0]) || "",
+      parts = [];
 
   for (let i = 0, len = match.length; i < len; i += 4) {
     parts.push(match.substring(i, i + 4));
@@ -95,6 +92,7 @@ class EditForm extends Component {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  maxLength="10"
                   fullWidth
                 />
               </div>
@@ -104,6 +102,7 @@ class EditForm extends Component {
                   required
                   name="cvv"
                   label="CVV"
+                  maxLength="3"
                   fullWidth
                 />
               </div>
