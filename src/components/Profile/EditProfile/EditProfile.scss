@@ -8,10 +8,17 @@
 
   &__container {
     justify-content: space-between;
+    margin-bottom: 10px;
   }
 
   &__item {
+    position: relative;
     width: calc((100%/2) - 20px);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    
+    p.Mui-required {
+      position: absolute;
+      top: 100%;
+    }
   }
 }

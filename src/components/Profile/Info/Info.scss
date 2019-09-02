@@ -1,11 +1,14 @@
 .info {
   background: #fff;
-  position: absolute;
   z-index: 2;
-  top: 100px;
-  left: 30px;
-  width: 500px;
   padding: 30px;
+
+  &--mini {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    width: 500px;
+  }
 
   &__title {
     font-size: 26px;

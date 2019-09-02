@@ -7,7 +7,7 @@ import './Info.scss';
 
 const Info = () => {
   return (
-    <div className="info">
+    <div className="info info--mini">
       <div className="info__title">Заполните платежные данные</div>
       <div className="info__text">Укажите информацию о банковской карте, чтобы сделать заказ.</div>
       <Button
