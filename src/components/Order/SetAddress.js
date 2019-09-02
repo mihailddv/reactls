@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import Grid from "@material-ui/core/Grid";
-import { Typography } from "@material-ui/core";
-import { Button, Segment } from "semantic-ui-react";
+// import Grid from "@material-ui/core/Grid";
+// import { Typography } from "@material-ui/core";
+import { Button } from "semantic-ui-react";
 import './Order.scss';
 
 
@@ -51,6 +51,7 @@ class SetAddress extends Component {
 
           <div className="call__item">
             <Select
+              className="call__select"
               isClearable
               value={fromWhere}
               onChange={this.setFromWhere}
@@ -60,6 +61,7 @@ class SetAddress extends Component {
           </div>
           <div className="call__item">
             <Select
+              className="call__select"
               isClearable
               value={toWhere}
               onChange={this.setToWhere}

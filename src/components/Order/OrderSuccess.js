@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { Typography, Paper } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Button } from "semantic-ui-react";
 
 const OrderSuccess = props => {
@@ -18,7 +18,9 @@ const OrderSuccess = props => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Button color="red" onClick={cancelOrder}>
+        <Button 
+          color="red"
+          onClick={cancelOrder}>
           Отменить
         </Button>
       </Grid>

@@ -12,6 +12,15 @@
     margin-bottom: 20px;
   }
 
+  &__select {
+    cursor: pointer;
+
+    & > * {
+      cursor: pointer !important;
+      
+    }
+  }
+
   &__item {
     margin-bottom: 20px;
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createOrder, cancelOrder } from '../../modules/Order';
-
 import SetAddress from './SetAddress';
 import OrderSuccess from './OrderSuccess';
 import Info from '../Profile/Info';
@@ -46,7 +45,10 @@ class Order extends Component {
 
     return (
       <div className='setAddres'>
-        <SetAddress map={map} createOrder={this.createOrder} />
+        <SetAddress 
+          map={map} 
+          createOrder={this.createOrder} 
+        />
       </div>
     );
   }

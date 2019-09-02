@@ -4,11 +4,14 @@
 }
 
 .form-edit {
+  margin-top: 20px;
+
   &__container {
     justify-content: space-between;
   }
+
   &__item {
-    width: calc( (100%/2) - 20px);
+    width: calc((100%/2) - 20px);
     margin-bottom: 20px;
   }
 }

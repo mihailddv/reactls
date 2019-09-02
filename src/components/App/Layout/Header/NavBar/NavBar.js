@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Button, Segment, Header } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import "./Nav.css";
+import "./Nav.scss";
 
 
 const styles = {
@@ -11,10 +11,6 @@ const styles = {
   },
   grow: {
     flexGrow: 1
-  },
-  NavBar: {
-    position: "fixed",
-    width: "100%"
   }
 };
 
@@ -44,12 +40,12 @@ class NavBar extends Component {
 
     return (
       <div className={classes.root}>
-        <Segment color="red" style={styles.NavBar}>
-          <Header as="h2" floated="left">
+        <div color="red" className="topmenu">
+          <div className="logo">
             Loft Taxi
-          </Header>
+          </div>
           {isAuthorized ? this.renderMenu() : ""}
-        </Segment>
+        </div>
       </div>
     );
     

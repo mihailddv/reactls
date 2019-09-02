@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAddressList, getMapCoordinates } from '../../modules/Map';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import Order from '../Order';
-
 import './Map.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 class Map extends Component {
   map = null;
@@ -16,7 +15,7 @@ class Map extends Component {
     getAddressList();
 
     mapboxgl.accessToken =
-      'pk.eyJ1IjoibWlyemFwdWxhdG92IiwiYSI6ImNqcjdnOHJ6MzA1Nmk0M284Zng0NzB1cWYifQ.-wVWVa4l6r6xT7Cv1_iNrA';
+      'pk.eyJ1Ijoid2FsYWxlZGUiLCJhIjoiY2swMjZkcm40MXZicDNjbGE4cnB0dzhqdiJ9.VHxZZeHRvmYNGlhqx0rO1g';
     this.map = new mapboxgl.Map({
       container: this.mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v9',
@@ -67,14 +66,14 @@ class Map extends Component {
 
   render() {
     return (
-      <Fragment>
+      <React.Fragment>
         <Order removeLayer={this.removeLayer} />
         <div
           className='map'
           style={{ height: window.innerHeight - 65 }}
           ref={this.mapContainer}
         />
-      </Fragment>
+      </React.Fragment>
     );
   }
 }
