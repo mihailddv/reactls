@@ -24,3 +24,25 @@ a {
   color: #4CD0FF;
   text-decoration-color: rgba(0, 210, 233, 0.5);
 }
+
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  max-width: 250px;
+  height: 30px;
+  padding: 0 20px;
+  background-color: #db2828;
+  color: #fff;
+  font-size: 14px;
+  transition: .3s;
+  font-weight: bold;
+  border-radius: 5px;
+
+  &:hover {
+    color: #fff;
+    background: #d01919;
+  }
+}
